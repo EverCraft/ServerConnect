@@ -1,0 +1,75 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			name = 'minecrell-repo'
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	
+	dependencies {
+		classpath "gradle.plugin.net.minecrell:licenser:0.3"
+	}
+}
+
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: "net.minecrell.licenser"
+
+// Arguments :
+ext.plugin_version = "1.0"
+
+version = ext.plugin_version + "-RELEASE"
+if (project.hasProperty("BUILD_NUMBER")) {
+	version = version + '-' + project.property("BUILD_NUMBER")
+}
+
+group = 'fr.evercraft'
+organization = 'EverCraft'
+
+// Default tasks
+defaultTasks 'clean', 'licenseFormat', 'build'
+
+repositories {
+	mavenCentral()
+	maven {
+		name = 'spigot-repo'
+		url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+	}
+	maven {
+		name = 'bungeecord-repo'
+		url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+	}
+}
+
+dependencies {
+	compile "org.bukkit:bukkit:1.11.2-R0.1-SNAPSHOT"
+	compile "net.md-5:bungeecord-api:1.12-SNAPSHOT"
+}
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': name,
+				   'Implementation-Version': version
+	}
+}
+
+processResources {
+    include '*.yml'
+	from 'HEADER.txt'
+}
+		
+license {
+	header = project.file('HEADER.txt')
+	include '**/*.java'
+	ignoreFailures = true
+	newLine = false // Disables the new line
+	ext {
+		name = project.name
+		organization = project.organization
+		url = project.url
+	}
+}

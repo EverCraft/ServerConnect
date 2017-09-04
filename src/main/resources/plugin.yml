@@ -1,0 +1,8 @@
+name: ServerConnect
+version: 1.0
+authors: [rexbut]
+main: fr.evercraft.serverconnect.ServerConnect
+commands:
+   serverconnect:
+    usage: /serverconnect
+    default: op
