@@ -34,7 +34,12 @@ public class EListener implements Listener {
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		if (this.plugin.getServer().getOnlinePlayers().size() != 1) return;
 		
-		this.plugin.getMessageBungee().sendGetServers();
+		this.plugin.getServer().getScheduler().runTaskLater(this.plugin, new Runnable() {
+		    @Override
+		    public void run() {
+		    	EListener.this.plugin.getMessageBungee().sendGetServers();
+		    }
+		}, 5L);
 	}
 
 	@EventHandler
@@ -47,7 +52,7 @@ public class EListener implements Listener {
 		
 		event.setCancelled(true);
 		
-		if (player.isOp() || player.hasPermission(ServerConnect.PERMISSION_SERVERS + "*") || player.hasPermission(ServerConnect.PERMISSION_SERVERS + server)) {
+		if (player.isOp() || player.hasPermission(ServerConnect.PERMISSION_SERVERS + server)) {
 			this.plugin.getMessageBungee().connect(player, command);
 		} else {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.plugin.getConfig().getString("noPermission", "&cYou don't have permissions for that server!")));
