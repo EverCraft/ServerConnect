@@ -48,7 +48,6 @@ public class MessageBungee implements PluginMessageListener {
 		ByteArrayDataOutput out = ByteStreams.newDataOutput();
 		out.writeUTF(GET_SERVERS);
 		Player player = players.next();
-		Bukkit.broadcastMessage("sendGetServers : " + player.getName());
 		player.sendPluginMessage(this.plugin, CHANNEL_BUNGEE, out.toByteArray());
 	}
 	
